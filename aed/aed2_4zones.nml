@@ -8,7 +8,7 @@
    'aed_silica',
    'aed_nitrogen',
    'aed_phosphorus',
-   'aed_organic_matter'
+   'aed_organic_matter',
    'aed_phytoplankton',
    'aed_totals'
 /
