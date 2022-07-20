@@ -128,8 +128,8 @@
    sed_heat_model = 1
    n_zones = 4
    zone_heights = 3, 5, 7, 9.5
-   sed_heat_Ksoil = 1.2, 1.2, 1.2
-   sed_temp_depth = 0.5, 0.5, 0.5
+   sed_heat_Ksoil = 1.2, 1.2, 1.2, 1.2
+   sed_temp_depth = 0.5, 0.5, 0.5, 0.5
   !  sed_temp_mean = 11.39072901, 14.85279613, 14.85279613
    sed_temp_mean = 12, 12, 12, 20 ! 12.46962553, 15.75549561, 21.89313606
    sed_temp_amplitude = 3, 3, 3, 5, !2.767260656, 3.993449873, 5.232029619
