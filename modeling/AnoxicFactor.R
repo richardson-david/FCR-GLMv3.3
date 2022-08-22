@@ -53,8 +53,8 @@ get_wattemp <- function(mod_nc, reference = "surface", var, int_step){
 #now run the function above for oxygen 
 oxy_data <- get_wattemp(mod_nc, reference = 'surface', var ='OXY_oxy',int_step=0.1)
 
-# get oxycline depth (1 mg/L)
-crit <- 1.0 * 1000/32 #could be 2 mg/L or other!
+# get oxycline depth (2 mg/L)
+crit <- 2.0 * 1000/32 #could be 2 mg/L or other!
 obs.crit <- crit * 32/1000
 
 #get hypsometry
