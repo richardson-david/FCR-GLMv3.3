@@ -78,6 +78,7 @@ for (ii in 1:ncol(oxy_data$sim)){
         min.crit <- min.crit[-c((min(badpt)+1):length(min.crit))]
       }
       oxy.dep <- append(oxy.dep, oxy_data$dep[max(min.crit)])
+      #print(oxy.dep)
       oxy.area <- append(oxy.area, pracma::interp1(H, A, oxy.dep[ii], method = "spline"))
       oxy.value = append(oxy.value, oxy_data$sim[which(abs(oxy_data$sim[,ii] - crit) == min(abs(oxy_data$sim[,ii] - crit), na.rm = TRUE)),ii])
     } else {
