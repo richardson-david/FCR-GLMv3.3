@@ -45,7 +45,7 @@
 &time
    timefmt = 2
    start = '2015-07-07 12:00:00'
-   stop = '2020-12-31 12:00:00'
+   stop = '2021-12-31 12:00:00'
    dt = 3600
    num_days = 1
    timezone = -5
@@ -53,7 +53,7 @@
 &output
    out_dir = 'output'
    out_fn = 'output'
-   nsave = 24
+   nsave = 1
 /
 &init_profiles
    num_depths = 29
@@ -102,7 +102,7 @@
    inflow_factor = 1, 0.3
    strmbd_drag = 0.03, 0.03
    subm_elev = 7.166530546, 1.022787437
-   inflow_fl = 'inputs/FCR_weir_inflow_2013_2020_20220411_allfractions_2poolsDOC_1dot5xDOCr.csv','inputs/FCR_SSS_inflow_2013_2021_20220411_allfractions_2DOCpools.csv'
+   inflow_fl = 'inputs/FCR_weir_inflow_2013_2021_20220927_allfractions_2poolsDOC_1dot5xDOCr.csv','inputs/FCR_SSS_inflow_2013_2021_20220411_allfractions_2DOCpools.csv'
    inflow_varnum = 37
    inflow_vars = 'FLOW','TEMP','SALT','TRC_tr1','TRC_age','NCS_ss1','NCS_ss2','OXY_oxy','CAR_dic','CAR_pH','CAR_ch4','CAR_ch4_bub','SIL_rsi','NIT_amm','NIT_nit','PHS_frp','PHS_frp_ads','OGM_doc','OGM_poc','OGM_don','OGM_pon','OGM_dop','OGM_pop','OGM_docr','OGM_donr','OGM_dopr','OGM_cpom','PHY_cyano','PHY_cyano_IN','PHY_cyano_IP','PHY_green','PHY_green_IN','PHY_green_IP','PHY_diatom','PHY_diatom_IN','PHY_diatom_IP','BIV_filtfrac'
 /
@@ -112,7 +112,7 @@
    outl_elvs = 506.9
    bsn_len_outl = 711.699
    bsn_wid_outl = 226.03
-   outflow_fl = 'inputs/FCR_spillway_outflow_WeirOnly_2013_2020_20211102.csv'
+   outflow_fl = 'inputs/FCR_spillway_outflow_WeirOnly_2013_2021_20220927.csv'
    outflow_factor = 1
 /
 &snowice
