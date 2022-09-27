@@ -10,8 +10,8 @@
 #*        variables, and calculates RMSE for each depth.
 #*****************************************************************
 
-remotes::install_github("CareyLabVT/GLMr", force = T)
-remotes::install_github("CareyLabVT/glmtools", force = T)
+#remotes::install_github("CareyLabVT/GLMr", force = T)
+#remotes::install_github("CareyLabVT/glmtools", force = T)
 
 Sys.setenv(TZ = 'America/New_York')
 
@@ -24,8 +24,8 @@ sim_folder <- getwd()
 
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
-aed_file <- paste0(sim_folder,"/aed2/aed2_4zones.nml")
-aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_2May2022_RQT.nml")
+aed_file <- paste0(sim_folder,"/aed/aed2_4zones.nml")
+aed_phytos_file <- paste0(sim_folder,"/aed/aed2_phyto_pars_2May2022_RQT.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
 aed_phytos <- read_nml(aed_phytos_file)
@@ -61,16 +61,16 @@ plot(volume$time, volume$Tot_V)
 plot(evap$time, evap$evap)
 plot(precip$time, precip$precip)
 
-outflow<-read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T)
-inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv", header=T)
-inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv", header=T)
+outflow<-read.csv("inputs/FCR_spillway_outflow_WeirOnly_2013_2021_20220927.csv", header=T)
+inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2021_20220927_allfractions_2poolsDOC_1dot5xDOCr.csv", header=T)
+#inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv", header=T)
 outflow$time<-as.POSIXct(strptime(outflow$time, "%Y-%m-%d", tz="EST"))
 inflow_weir$time<-as.POSIXct(strptime(inflow_weir$time, "%Y-%m-%d", tz="EST"))
-inflow_wetland$time<-as.POSIXct(strptime(inflow_wetland$time, "%Y-%m-%d", tz="EST"))
+#inflow_wetland$time<-as.POSIXct(strptime(inflow_wetland$time, "%Y-%m-%d", tz="EST"))
 
 plot(inflow_weir$time,inflow_weir$FLOW)
-lines(inflow_wetland$time, inflow_wetland$FLOW, col="red")
-sum(inflow_weir$FLOW)/(sum(inflow_weir$FLOW) + sum(inflow_wetland$FLOW))#proportion of wetland:weir inflows over time
+#lines(inflow_wetland$time, inflow_wetland$FLOW, col="red")
+#sum(inflow_weir$FLOW)/(sum(inflow_weir$FLOW) + sum(inflow_wetland$FLOW))#proportion of wetland:weir inflows over time
 
 volume$time<-as.POSIXct(strptime(volume$time, "%Y-%m-%d", tz="EST"))
 wrt<-merge(volume, outflow, by='time')
@@ -87,10 +87,10 @@ ice<-get_var(nc_file,"hwice")
 iceblue<-get_var(nc_file,"hice")
 icesnow <- get_var(nc_file, "hsnow")
 plot(ice$DateTime,rowSums(cbind(ice$hwice,iceblue$hice)))
-plot(ice$DateTime,ice$hwice, col="black", type="l", ylim=c(0,0.2))
-lines(ice$DateTime, iceblue$hice, col="blue", type="l")
-lines(ice$DateTime, icesnow$hsnow, col="red", type="l")
-legend("topleft", legend=c("white ice", "blue ice", "snow ice"), col=c("black", "blue", "red"), pch=1)
+#plot(ice$DateTime,ice$hwice, col="black", type="l", ylim=c(0,0.2))
+#lines(ice$DateTime, iceblue$hice, col="blue", type="l")
+#lines(ice$DateTime, icesnow$hsnow, col="red", type="l")
+#legend("topleft", legend=c("white ice", "blue ice", "snow ice"), col=c("black", "blue", "red"), pch=1)
 
 avgsurftemp<- get_var(nc_file,"avg_surf_temp")
 plot(avgsurftemp$DateTime, avgsurftemp$avg_surf_temp, ylim=c(-1,2))
@@ -106,6 +106,7 @@ depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 modtemp <- get_temp(nc_file, reference="surface", z_out=depths) %>%
   pivot_longer(cols=starts_with("temp_"), names_to="Depth", names_prefix="temp_", values_to = "temp") %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
+#write.csv(modtemp, "ModeledWaterTempFCRForMaike_27Sep2022.csv", row.names = F)
 
 #lets do depth by depth comparisons of the obs vs mod temps for each focal depth
 watertemp<-merge(modtemp, obstemp, by=c("DateTime","Depth")) %>%

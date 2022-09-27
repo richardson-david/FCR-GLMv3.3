@@ -12,7 +12,7 @@
 #*****************************************************************
 
 
-setwd("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs")
+#setwd("/inputs")
 setwd("./inputs")
 sim_folder <- getwd()
 
@@ -25,16 +25,16 @@ library(tidyverse)
 library(lubridate)
 library(dplyr)
 
-#first read in FCR weir inflow file from EDI (updated for 2013-Dec 2020)
-#inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/202/7/f5fa5de4b49bae8373f6e7c1773b026e" 
-#infile1 <- paste0(getwd(),"/inflow_for_EDI_2013_10Jan2021.csv")
-#download.file(inUrl1,infile1,method="curl")
+#first read in FCR weir inflow file from EDI (updated for 2013-Dec 2021)
+# inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/202/8/cc045f9fe32501138d5f4e1e7f40d492" 
+# infile1 <- paste0(getwd(),"/Inflow_2013_2021.csv")
+# download.file(inUrl1,infile1,method="curl")
 
-inflow<-read_csv("inflow_for_EDI_2013_10Jan2021.csv") %>% 
+inflow<-read_csv("Inflow_2013_2021.csv") %>% 
   dplyr::select(DateTime, WVWA_Flow_cms, WVWA_Temp_C) %>% 
   dplyr::rename(time=DateTime, FLOW=WVWA_Flow_cms, TEMP=WVWA_Temp_C) %>%
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-  dplyr::filter(time < "2021-01-01") %>%
+  dplyr::filter(time < "2022-01-01") %>%
   group_by(time) %>% 
   dplyr::summarise(FLOW=mean(FLOW), TEMP=mean(TEMP)) #gives averaged daily flow per day in m3/s
  
@@ -42,7 +42,7 @@ inflow<-read_csv("inflow_for_EDI_2013_10Jan2021.csv") %>%
 plot(inflow$time, inflow$FLOW)
 
 #creating new dataframe with list of all dates
-datelist<-seq.Date(as.Date("2013/05/16"),as.Date("2020/12/31"), "days") #changed from May 15, 2013 because of NA in flow
+datelist<-seq.Date(as.Date("2013/05/16"),as.Date("2021/12/31"), "days") #changed from May 15, 2013 because of NA in flow
 datelist<-as.data.frame(datelist)
 colnames(datelist)=c("time")
 datelist$time<-as.POSIXct(strptime(datelist$time, "%Y-%m-%d", tz="EST"))
@@ -60,12 +60,12 @@ plot(weir$time, weir$FLOW, type = "o")
 plot(weir$time, weir$TEMP, type = "l", col = "red")
 
 #now let's merge with chemistry
-#first pull in FCR chem data from 2013-2020 from EDI
-#inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/199/9/fe500aac19d1a0d78bb2cb1d196cdbd7"
-#infile1 <- paste0(getwd(),"/chemistry_2013_2020.csv")
+#first pull in FCR chem data from 2013-2021 from EDI
+#inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/199/10/aa2ccc23688fc908f9d61cb217210a3d"
+#infile1 <- paste0(getwd(),"/chemistry_2013_2021.csv")
 #download.file(inUrl1,infile1,method="curl",extra='-k')
 
-FCRchem <- read.csv("chemistry_2013_2020.csv", header=T) %>%
+FCRchem <- read.csv("chemistry_2013_2021.csv", header=T) %>%
   select(Reservoir:DIC_mgL) %>%
   dplyr::filter(Reservoir=="FCR") %>%
   dplyr::filter(Site==100) %>%
@@ -139,7 +139,7 @@ for(i in 1:length(ghg2$time)){
 }  
 plot(ghg2$time, ghg2$CAR_ch4)
 #check to make sure it all works: each day's CH4 concentration during
-#2013-early 2015 is the mean daily data for 2015-2020
+#2013-early 2015 is the mean daily data for 2015-2021
 
 #read in lab dataset of pH at inflow
 #inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/198/10/b3bd353312f9e37ca392e2a5315cc9da" 
@@ -293,7 +293,7 @@ weir_inflow1 <- weir_inflow %>%
 
 #write file for inflow for the weir, with 2 pools of OC (DOC + DOCR)  
 #write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", row.names = F)
-write.csv(weir_inflow1, "FCR_weir_inflow_2013_2020_20220411_allfractions_2poolsDOC_1dot5xDOCr.csv", row.names = F)
+write.csv(weir_inflow1, "FCR_weir_inflow_2013_2021_20220927_allfractions_2poolsDOC_1dot5xDOCr.csv", row.names = F)
 
 #copying dataframe in workspace to be used later
 alltdata = alldata
@@ -308,7 +308,7 @@ outflow <- weir_inflow %>% #from above: this has both stream inflows together
 plot(outflow$time, outflow$FLOW)
 
 #write file
-write.csv(outflow, "FCR_spillway_outflow_WeirOnly_2013_2020_20211102.csv", row.names=F)
+write.csv(outflow, "FCR_spillway_outflow_WeirOnly_2013_2021_20220927.csv", row.names=F)
 ##############################################
 
 # #creating climatology weir inflow file for Quinn: average of day of year for all analytes
