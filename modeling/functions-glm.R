@@ -162,6 +162,7 @@ mod2obs <- function(mod_nc, obs, reference = 'surface', var){
   deps = unique(obs[,2])
   #tim = unique(obs[,1])
   mod <- glmtools::get_var(file = mod_nc,var,reference = reference, z_out = deps)
+  #EDIT THIS??####
   mod <- match.tstep1(obs, mod) #From gotm_functions.R        #EDIT THIS
   mod <- reshape2::melt(mod, id.vars = 1)
   mod[,2] <- as.character(mod[,2])
@@ -188,6 +189,7 @@ run_glm <- function(os){
     file.copy('aed2/aed4.nml', 'aed2/aed2.nml', overwrite = TRUE)
     system("glm",ignore.stdout=TRUE)
   } else if (os == "Compiled"){
+    #EDIT THIS####
     sim_folder <- "/Users/cayelan/Dropbox/GLM_V3/FCR/mh" #BE SURE TO EDIT THIS!
     system2("/Users/cayelan/Dropbox/GLM_V3/bin/Monterey/glm+.app/Contents/MacOS/glm+", stdout = TRUE, stderr = TRUE, env = "DYLD_LIBRARY_PATH=/Users/cayelan/Dropbox/GLM_V3/bin/Monterey/glm.app/Contents/MacOS")
   }
@@ -803,7 +805,7 @@ run_calibvalid <- function(var, var_unit, var_seq, cal_pars, pars, ub, lb, init.
   # } else if (flag == 2){
   #   file.copy('aed2/aed4.nml', 'aed2/aed2.nml', overwrite = TRUE)
   # }
-
+  ########EDIT THIS#############
   calibration.list <- list("start" = '2015-07-07 12:00:00',
                            "stop" = '2019-12-31 12:00:00')  #EDIT THIS!
   nml <- read_nml('glm3.nml')
@@ -905,7 +907,7 @@ run_calibvalid <- function(var, var_unit, var_seq, cal_pars, pars, ub, lb, init.
   plot_contour(mod_nc = out, reference = 'surface', h , var, var_unit,var_seq) 
   dev.off()
   
-  
+  #EDIT THIS####
   validation.list <- list("start" = '2019-01-01 00:00:00',
                           "stop" = '2019-12-31 12:00:00') # EDIT THIS
   nml <- read_nml('glm3.nml')
@@ -921,7 +923,7 @@ run_calibvalid <- function(var, var_unit, var_seq, cal_pars, pars, ub, lb, init.
   plot_contour(mod_nc = out, reference = 'surface', h , var,var_unit,var_seq) 
   dev.off()
   
-  
+  #EDIT THIS####
   total.list <- list("start" = '2015-07-07 12:00:00', "stop" = '2019-12-31 12:00:00') #EDIT THIS!
                 #EDIT THIS
                 #list("start" = '1980-04-01 00:00:00',
@@ -1035,6 +1037,7 @@ mod2obs_phy <- function(mod_nc, obs, reference = 'surface', var){
   obs$DateTime <- as.Date(obs$DateTime,format='%Y-%m-%d')
   obs <- as.data.frame(obs)
   mod$DateTime <- as.Date(mod$DateTime,format='%Y-%m-%d')
+  #EDIT THIS####
   mod <- match.tstep1(obs, mod) #From gotm_functions.R #EDIT THIS
   colnames(mod) <- c('DateTime', var)
   mod <- mod[order(mod$DateTime),]
