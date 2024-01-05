@@ -16,10 +16,11 @@
 Sys.setenv(TZ = 'America/New_York')
 
 # Load packages, set sim folder, load nml file ####
-#if (!require('pacman')) install.packages('pacman'); library('pacman')
+if (!require('pacman')) install.packages('pacman'); library('pacman')
 pacman::p_load(tidyverse, lubridate, ncdf4, GLMr, glmtools)
 
-setwd("~/Dropbox/ComputerFiles/SCC/FCR-GLMv3.3")
+#DCR: get rid of because we are working in a project and should be the root directory
+#setwd("~/Dropbox/ComputerFiles/SCC/FCR-GLMv3.3")
 sim_folder <- getwd()
 
 #look at glm and aed nml files
@@ -34,11 +35,24 @@ print(aed)
 print(aed_phytos)
 
 ##### run the model! #######
-sim_folder<-"/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLMv3.3"
-setwd(sim_folder)
+  #sim_folder<-"/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLMv3.3"
+  #setwd(sim_folder)
 
-system2("/Users/cayelan/Dropbox/GLM_V3/bin/Monterey/glm+.app/Contents/MacOS/glm+", stdout = TRUE, stderr = TRUE, env = "DYLD_LIBRARY_PATH=/Users/cayelan/Dropbox/GLM_V3/bin/Monterey/glm.app/Contents/MacOS")
-#system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = paste0("DYLD_LIBRARY_PATH=",sim_folder))
+#This runs GLM as well from GLM3r#####
+#remotes::install_github("FLARE-forecast/GLM3r")
+
+library(GLM3r)
+glm_version() # test glm version
+GLM3r::run_glm(sim_folder, nml_file = 'glm3.nml', verbose = T)
+
+#Running GLM####
+#Need to find the right pathway####
+system2(command="C:/Users/richardd/Documents/FCR-GLMv3.3/glmPlus.app/Contents/MacOS/glmPlus", stdout = TRUE, stderr = TRUE, 
+        env = paste0("DYLD_LIBRARY_PATH=",file.path(paste0("C:/Users/richardd/Documents/FCR-GLMv3.3/glmPlus.app/Contents/MacOS")))
+        )
+
+system2("/glmPlus.app/Contents/MacOS/glmPlus", stdout = TRUE, stderr = TRUE, env = "DYLD_LIBRARY_PATH=/glm.app/Contents/MacOS")
+
 #sometimes, you'll get an error that says "Error in file, 'Time(Date)' is not first column!
 #in this case, open the input file in Excel, set the column in Custom ("YYYY-MM-DD") format, resave, and close the file
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
